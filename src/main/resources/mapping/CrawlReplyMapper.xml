@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.courage.ccu_monitor.dao.CrawlReplyMapper">
+	<resultMap id="BaseResultMap" type="com.courage.ccu_monitor.model.CrawlReply">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="post_id" property="postId" jdbcType="VARCHAR" />
+		<result column="open_type" property="openType" jdbcType="VARCHAR" />
+		<result column="pub_time" property="pubTime" jdbcType="TIMESTAMP" />
+		<result column="post_no" property="postNo" jdbcType="VARCHAR" />
+		<result column="comment_num" property="commentNum" jdbcType="VARCHAR" />
+		<result column="pid" property="pid" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="com.courage.ccu_monitor.model.CrawlReply"
+		extends="BaseResultMap">
+		<result column="text" property="text" jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, post_id, open_type, pub_time, post_no, comment_num, pid, user_id,
+		user_name,
+		create_time
+	</sql>
+	<sql id="Blob_Column_List">
+		text
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from t_crawl_reply
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_crawl_reply
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.courage.ccu_monitor.model.CrawlReply">
+		insert into t_crawl_reply (id, post_id, open_type,
+		pub_time, post_no, comment_num,
+		pid, user_id, user_name,
+		create_time, text)
+		values (#{id,jdbcType=INTEGER}, #{postId,jdbcType=VARCHAR},
+		#{openType,jdbcType=VARCHAR},
+		#{pubTime,jdbcType=TIMESTAMP}, #{postNo,jdbcType=VARCHAR}, #{commentNum,jdbcType=VARCHAR},
+		#{pid,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+		#{userName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{text,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.courage.ccu_monitor.model.CrawlReply">
+		insert into t_crawl_reply
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="postId != null">
+				post_id,
+			</if>
+			<if test="openType != null">
+				open_type,
+			</if>
+			<if test="pubTime != null">
+				pub_time,
+			</if>
+			<if test="postNo != null">
+				post_no,
+			</if>
+			<if test="commentNum != null">
+				comment_num,
+			</if>
+			<if test="pid != null">
+				pid,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="text != null">
+				text,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="postId != null">
+				#{postId,jdbcType=VARCHAR},
+			</if>
+			<if test="openType != null">
+				#{openType,jdbcType=VARCHAR},
+			</if>
+			<if test="pubTime != null">
+				#{pubTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="postNo != null">
+				#{postNo,jdbcType=VARCHAR},
+			</if>
+			<if test="commentNum != null">
+				#{commentNum,jdbcType=VARCHAR},
+			</if>
+			<if test="pid != null">
+				#{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="text != null">
+				#{text,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.courage.ccu_monitor.model.CrawlReply">
+		update t_crawl_reply
+		<set>
+			<if test="postId != null">
+				post_id = #{postId,jdbcType=VARCHAR},
+			</if>
+			<if test="openType != null">
+				open_type = #{openType,jdbcType=VARCHAR},
+			</if>
+			<if test="pubTime != null">
+				pub_time = #{pubTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="postNo != null">
+				post_no = #{postNo,jdbcType=VARCHAR},
+			</if>
+			<if test="commentNum != null">
+				comment_num = #{commentNum,jdbcType=VARCHAR},
+			</if>
+			<if test="pid != null">
+				pid = #{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="text != null">
+				text = #{text,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.courage.ccu_monitor.model.CrawlReply">
+		update t_crawl_reply
+		set post_id = #{postId,jdbcType=VARCHAR},
+		open_type = #{openType,jdbcType=VARCHAR},
+		pub_time = #{pubTime,jdbcType=TIMESTAMP},
+		post_no = #{postNo,jdbcType=VARCHAR},
+		comment_num = #{commentNum,jdbcType=VARCHAR},
+		pid = #{pid,jdbcType=VARCHAR},
+		user_id = #{userId,jdbcType=VARCHAR},
+		user_name = #{userName,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		text = #{text,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.courage.ccu_monitor.model.CrawlReply">
+		update t_crawl_reply
+		set post_id = #{postId,jdbcType=VARCHAR},
+		open_type = #{openType,jdbcType=VARCHAR},
+		pub_time = #{pubTime,jdbcType=TIMESTAMP},
+		post_no = #{postNo,jdbcType=VARCHAR},
+		comment_num = #{commentNum,jdbcType=VARCHAR},
+		pid = #{pid,jdbcType=VARCHAR},
+		user_id = #{userId,jdbcType=VARCHAR},
+		user_name = #{userName,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectByTimeScope" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from t_crawl_reply
+		where create_time between #{start,jdbcType=TIMESTAMP} and
+		#{end,jdbcType=TIMESTAMP}
+	</select>
+</mapper>

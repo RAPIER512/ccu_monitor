@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.courage.ccu_monitor.dao.HotwordStatisticMapper">
+	<resultMap id="BaseResultMap"
+		type="com.courage.ccu_monitor.model.HotwordStatistic">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="hot_word" property="hotWord" jdbcType="VARCHAR" />
+		<result column="day_num" property="dayNum" jdbcType="INTEGER" />
+		<result column="week_num" property="weekNum" jdbcType="INTEGER" />
+		<result column="mon_num" property="monNum" jdbcType="INTEGER" />
+		<result column="hont_num" property="hontNum" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, hot_word, day_num, week_num, mon_num, hont_num, status, create_time
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_hotword_statistic
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_hotword_statistic
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.courage.ccu_monitor.model.HotwordStatistic">
+		insert into t_hotword_statistic (id, hot_word, day_num,
+		week_num, mon_num, hont_num,
+		status, create_time)
+		values (#{id,jdbcType=INTEGER}, #{hotWord,jdbcType=VARCHAR},
+		#{dayNum,jdbcType=INTEGER},
+		#{weekNum,jdbcType=INTEGER}, #{monNum,jdbcType=INTEGER}, #{hontNum,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.courage.ccu_monitor.model.HotwordStatistic">
+		insert into t_hotword_statistic
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="hotWord != null">
+				hot_word,
+			</if>
+			<if test="dayNum != null">
+				day_num,
+			</if>
+			<if test="weekNum != null">
+				week_num,
+			</if>
+			<if test="monNum != null">
+				mon_num,
+			</if>
+			<if test="hontNum != null">
+				hont_num,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="hotWord != null">
+				#{hotWord,jdbcType=VARCHAR},
+			</if>
+			<if test="dayNum != null">
+				#{dayNum,jdbcType=INTEGER},
+			</if>
+			<if test="weekNum != null">
+				#{weekNum,jdbcType=INTEGER},
+			</if>
+			<if test="monNum != null">
+				#{monNum,jdbcType=INTEGER},
+			</if>
+			<if test="hontNum != null">
+				#{hontNum,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.courage.ccu_monitor.model.HotwordStatistic">
+		update t_hotword_statistic
+		<set>
+			<if test="hotWord != null">
+				hot_word = #{hotWord,jdbcType=VARCHAR},
+			</if>
+			<if test="dayNum != null">
+				day_num = #{dayNum,jdbcType=INTEGER},
+			</if>
+			<if test="weekNum != null">
+				week_num = #{weekNum,jdbcType=INTEGER},
+			</if>
+			<if test="monNum != null">
+				mon_num = #{monNum,jdbcType=INTEGER},
+			</if>
+			<if test="hontNum != null">
+				hont_num = #{hontNum,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.courage.ccu_monitor.model.HotwordStatistic">
+		update t_hotword_statistic
+		set hot_word = #{hotWord,jdbcType=VARCHAR},
+		day_num = #{dayNum,jdbcType=INTEGER},
+		week_num = #{weekNum,jdbcType=INTEGER},
+		mon_num = #{monNum,jdbcType=INTEGER},
+		hont_num = #{hontNum,jdbcType=INTEGER},
+		status = #{status,jdbcType=INTEGER},
+		create_time = #{createTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>
