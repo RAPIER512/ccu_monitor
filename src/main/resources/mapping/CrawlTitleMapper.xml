@@ -15,7 +15,8 @@
 		<result column="text" property="text" jdbcType="LONGVARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, post_id, reply_num, author_name, author_id, pub_time, create_time
+		id, post_id, reply_num, author_name, author_id, pub_time,
+		create_time
 	</sql>
 	<sql id="Blob_Column_List">
 		text
@@ -30,16 +31,19 @@
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from t_crawl_title
+		delete from
+		t_crawl_title
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.courage.ccu_monitor.model.CrawlTitle">
-		insert into t_crawl_title (id, post_id, reply_num,
+		insert into t_crawl_title (id,
+		post_id, reply_num,
 		author_name, author_id, pub_time,
 		create_time, text)
 		values (#{id,jdbcType=INTEGER}, #{postId,jdbcType=VARCHAR},
 		#{replyNum,jdbcType=VARCHAR},
-		#{authorName,jdbcType=VARCHAR}, #{authorId,jdbcType=VARCHAR}, #{pubTime,jdbcType=TIMESTAMP},
+		#{authorName,jdbcType=VARCHAR},
+		#{authorId,jdbcType=VARCHAR}, #{pubTime,jdbcType=TIMESTAMP},
 		#{createTime,jdbcType=TIMESTAMP}, #{text,jdbcType=LONGVARCHAR})
 	</insert>
 	<insert id="insertSelective" parameterType="com.courage.ccu_monitor.model.CrawlTitle">
@@ -125,35 +129,111 @@
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.courage.ccu_monitor.model.CrawlTitle">
-		update t_crawl_title
+		update
+		t_crawl_title
 		set post_id = #{postId,jdbcType=VARCHAR},
-		reply_num = #{replyNum,jdbcType=VARCHAR},
-		author_name = #{authorName,jdbcType=VARCHAR},
-		author_id = #{authorId,jdbcType=VARCHAR},
+		reply_num =
+		#{replyNum,jdbcType=VARCHAR},
+		author_name =
+		#{authorName,jdbcType=VARCHAR},
+		author_id =
+		#{authorId,jdbcType=VARCHAR},
 		pub_time = #{pubTime,jdbcType=TIMESTAMP},
 		create_time = #{createTime,jdbcType=TIMESTAMP},
-		text = #{text,jdbcType=LONGVARCHAR}
+		text =
+		#{text,jdbcType=LONGVARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.courage.ccu_monitor.model.CrawlTitle">
-		update t_crawl_title
+		update
+		t_crawl_title
 		set post_id = #{postId,jdbcType=VARCHAR},
-		reply_num = #{replyNum,jdbcType=VARCHAR},
-		author_name = #{authorName,jdbcType=VARCHAR},
-		author_id = #{authorId,jdbcType=VARCHAR},
+		reply_num =
+		#{replyNum,jdbcType=VARCHAR},
+		author_name =
+		#{authorName,jdbcType=VARCHAR},
+		author_id =
+		#{authorId,jdbcType=VARCHAR},
 		pub_time = #{pubTime,jdbcType=TIMESTAMP},
 		create_time = #{createTime,jdbcType=TIMESTAMP}
-		where id = #{id,jdbcType=INTEGER}
+		where id =
+		#{id,jdbcType=INTEGER}
 	</update>
 
 
-	<select id="selectByTimeScope" resultMap="ResultMapWithBLOBs">
+
+
+	<select id="selectByTimeScope1" resultMap="ResultMapWithBLOBs">
 		select
 		<include refid="Base_Column_List" />
 		,
 		<include refid="Blob_Column_List" />
 		from t_crawl_title
-		where create_time between #{start,jdbcType=TIMESTAMP} and
+		where create_time between
+		#{start,jdbcType=TIMESTAMP} and
 		#{end,jdbcType=TIMESTAMP}
 	</select>
+
+	<select id="selectContentVOById" resultMap="ContentResultMap">
+		select id, post_id,
+		reply_num, author_name, author_id, pub_time,create_time,text
+		from
+		t_crawl_title
+		where post_id = #{titleId}
+	</select>
+	<resultMap id="ContentResultMap" type="com.courage.ccu_monitor.vo.ContentVO">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="post_id" property="postId" jdbcType="VARCHAR" />
+		<result column="reply_num" property="replyNum" jdbcType="VARCHAR" />
+		<result column="author_name" property="authorName" jdbcType="VARCHAR" />
+		<result column="author_id" property="authorId" jdbcType="VARCHAR" />
+		<result column="pub_time" property="pubTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="text" property="text" jdbcType="LONGVARCHAR" />
+		<collection property="replyVOs" column="post_id"
+			select="selectReplyVOByTitleId" ofType="com.courage.ccu_monitor.vo.ReplyVO">
+		</collection>
+	</resultMap>
+	<select id="selectReplyVOByTitleId" resultMap="ReplyVosResultMap">
+		select id,post_id, open_type, pub_time, post_no, comment_num,title_id,pid,user_id,user_name,create_time,text
+		from t_crawl_reply
+		where title_id = #{post_id}
+	</select>
+	<resultMap id="ReplyVosResultMap" type="com.courage.ccu_monitor.vo.ReplyVO">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="post_id" property="postId" jdbcType="VARCHAR" />
+		<result column="open_type" property="openType" jdbcType="VARCHAR" />
+		<result column="pub_time" property="pubTime" jdbcType="TIMESTAMP" />
+		<result column="post_no" property="postNo" jdbcType="VARCHAR" />
+		<result column="comment_num" property="commentNum" jdbcType="VARCHAR" />
+		<result column="title_id" property="titleId" jdbcType="VARCHAR" />
+		<result column="pid" property="pid" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="text" property="text" jdbcType="LONGVARCHAR" />
+		<collection property="replyVOs" column="post_id" select="selectReplyVOByPid"
+			ofType="com.courage.ccu_monitor.vo.ReplyVO">
+		</collection>
+	</resultMap>
+	<select id="selectReplyVOByPid" resultMap="ReplyVos2ResultMap" >
+		select id,post_id, open_type, pub_time, post_no, comment_num,title_id,pid,user_id,user_name,create_time,text
+		from t_crawl_reply
+		where pid = #{postId}
+	</select>
+	<resultMap id="ReplyVos2ResultMap" type="com.courage.ccu_monitor.vo.ReplyVO">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="post_id" property="postId" jdbcType="VARCHAR" />
+		<result column="open_type" property="openType" jdbcType="VARCHAR" />
+		<result column="pub_time" property="pubTime" jdbcType="TIMESTAMP" />
+		<result column="post_no" property="postNo" jdbcType="VARCHAR" />
+		<result column="comment_num" property="commentNum" jdbcType="VARCHAR" />
+		<result column="title_id" property="titleId" jdbcType="VARCHAR" />
+		<result column="pid" property="pid" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="text" property="text" jdbcType="LONGVARCHAR" />
+	</resultMap>
+
 </mapper>

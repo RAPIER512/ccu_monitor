@@ -1,4 +1,4 @@
-package com.courage.ccu_monitor.util.mail;
+ package com.courage.ccu_monitor.util.mail;
 
 /**
  * 发送邮件需要使用的基本信息
@@ -27,13 +27,13 @@ public class MailSenderInfo {
 	private String[] attachFileNames;
 
 	public MailSenderInfo() {
-		this.mailServerHost = "smtp.ym.163.com";
+		this.mailServerHost = "smtp.qq.com";
 		this.mailServerPort = "25";
 		this.validate = true;
-		this.userName = "sunshinan@qctt.cn";
-		this.password = "sunshinan";// 您的邮箱密码
-		this.fromAddress = "sunshinan@qctt.cn";
-		this.toAddress = "sunshinan@qctt.cn";
+		this.userName = "2395955747@qq.com";
+		this.password = "512666zgq";// 您的邮箱密码
+		this.fromAddress = "2395955747@qq.com";
+		this.toAddress = "1071712073@qq.com";
 	}
 
 	/**

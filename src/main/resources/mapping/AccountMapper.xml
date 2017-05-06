@@ -92,4 +92,11 @@
 		status = #{status,jdbcType=INTEGER}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+	
+	
+	<select id="getAllAccount" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_account
+	</select>
 </mapper>

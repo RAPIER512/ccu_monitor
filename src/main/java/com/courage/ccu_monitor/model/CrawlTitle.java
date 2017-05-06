@@ -13,9 +13,9 @@ public class CrawlTitle {
 
     private String authorId;
 
-    private Date pubTime;
+    private String pubTime;
 
-    private Date createTime;
+    private String createTime;
 
     private String text;
 
@@ -59,19 +59,19 @@ public class CrawlTitle {
         this.authorId = authorId == null ? null : authorId.trim();
     }
 
-    public Date getPubTime() {
+    public String getPubTime() {
         return pubTime;
     }
 
-    public void setPubTime(Date pubTime) {
+    public void setPubTime(String pubTime) {
         this.pubTime = pubTime;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

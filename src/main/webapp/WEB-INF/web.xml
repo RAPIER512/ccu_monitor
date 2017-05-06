@@ -11,7 +11,7 @@
     <!--用于设置context的参数,如果不设置contextConfigLocation则默认的spring配置文件applicationContext.xml放在WEB-INF目录下-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring.xml</param-value>
+        <param-value>classpath:spring-mybatis.xml</param-value>
     </context-param>
     <!--用于解决静态资源的映射处理问题-->
     <servlet-mapping>
@@ -97,5 +97,5 @@
     <!--welcome file 设置-->
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
-    </welcome-file-list>
+    </welcome-file-list> 
 </web-app>

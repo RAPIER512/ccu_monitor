@@ -17,7 +17,7 @@ public class UserMsg {
 
     private String account;
 
-    private Date createTime;
+    private String createTime;
 
     public Integer getId() {
         return id;
@@ -75,11 +75,11 @@ public class UserMsg {
         this.account = account == null ? null : account.trim();
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

@@ -7,7 +7,7 @@ public class Keyword {
 
     private String keyword;
 
-    private Date createTime;
+    private String createTime;
 
     private Integer type;
 
@@ -31,11 +31,11 @@ public class Keyword {
         this.keyword = keyword == null ? null : keyword.trim();
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

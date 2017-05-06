@@ -8,6 +8,7 @@
 		<result column="pub_time" property="pubTime" jdbcType="TIMESTAMP" />
 		<result column="post_no" property="postNo" jdbcType="VARCHAR" />
 		<result column="comment_num" property="commentNum" jdbcType="VARCHAR" />
+		<result column="title_id" property="titleId" jdbcType="VARCHAR" />
 		<result column="pid" property="pid" jdbcType="VARCHAR" />
 		<result column="user_id" property="userId" jdbcType="VARCHAR" />
 		<result column="user_name" property="userName" jdbcType="VARCHAR" />
@@ -18,8 +19,8 @@
 		<result column="text" property="text" jdbcType="LONGVARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, post_id, open_type, pub_time, post_no, comment_num, pid, user_id,
-		user_name,
+		id, post_id, open_type, pub_time, post_no, comment_num, title_id, pid,
+		user_id, user_name,
 		create_time
 	</sql>
 	<sql id="Blob_Column_List">
@@ -41,14 +42,16 @@
 	<insert id="insert" parameterType="com.courage.ccu_monitor.model.CrawlReply">
 		insert into t_crawl_reply (id, post_id, open_type,
 		pub_time, post_no, comment_num,
-		pid, user_id, user_name,
-		create_time, text)
+		title_id, pid, user_id,
+		user_name, create_time, text
+		)
 		values (#{id,jdbcType=INTEGER}, #{postId,jdbcType=VARCHAR},
 		#{openType,jdbcType=VARCHAR},
 		#{pubTime,jdbcType=TIMESTAMP}, #{postNo,jdbcType=VARCHAR}, #{commentNum,jdbcType=VARCHAR},
-		#{pid,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
-		#{userName,jdbcType=VARCHAR},
-		#{createTime,jdbcType=TIMESTAMP}, #{text,jdbcType=LONGVARCHAR})
+		#{titleId,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR},
+		#{userId,jdbcType=VARCHAR},
+		#{userName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{text,jdbcType=LONGVARCHAR}
+		)
 	</insert>
 	<insert id="insertSelective" parameterType="com.courage.ccu_monitor.model.CrawlReply">
 		insert into t_crawl_reply
@@ -70,6 +73,9 @@
 			</if>
 			<if test="commentNum != null">
 				comment_num,
+			</if>
+			<if test="titleId != null">
+				title_id,
 			</if>
 			<if test="pid != null">
 				pid,
@@ -106,6 +112,9 @@
 			<if test="commentNum != null">
 				#{commentNum,jdbcType=VARCHAR},
 			</if>
+			<if test="titleId != null">
+				#{titleId,jdbcType=VARCHAR},
+			</if>
 			<if test="pid != null">
 				#{pid,jdbcType=VARCHAR},
 			</if>
@@ -141,6 +150,9 @@
 			<if test="commentNum != null">
 				comment_num = #{commentNum,jdbcType=VARCHAR},
 			</if>
+			<if test="titleId != null">
+				title_id = #{titleId,jdbcType=VARCHAR},
+			</if>
 			<if test="pid != null">
 				pid = #{pid,jdbcType=VARCHAR},
 			</if>
@@ -166,6 +178,7 @@
 		pub_time = #{pubTime,jdbcType=TIMESTAMP},
 		post_no = #{postNo,jdbcType=VARCHAR},
 		comment_num = #{commentNum,jdbcType=VARCHAR},
+		title_id = #{titleId,jdbcType=VARCHAR},
 		pid = #{pid,jdbcType=VARCHAR},
 		user_id = #{userId,jdbcType=VARCHAR},
 		user_name = #{userName,jdbcType=VARCHAR},
@@ -180,6 +193,7 @@
 		pub_time = #{pubTime,jdbcType=TIMESTAMP},
 		post_no = #{postNo,jdbcType=VARCHAR},
 		comment_num = #{commentNum,jdbcType=VARCHAR},
+		title_id = #{titleId,jdbcType=VARCHAR},
 		pid = #{pid,jdbcType=VARCHAR},
 		user_id = #{userId,jdbcType=VARCHAR},
 		user_name = #{userName,jdbcType=VARCHAR},
@@ -193,7 +207,25 @@
 		,
 		<include refid="Blob_Column_List" />
 		from t_crawl_reply
-		where create_time between #{start,jdbcType=TIMESTAMP} and
+		where create_time between
+		#{start,jdbcType=TIMESTAMP} and
 		#{end,jdbcType=TIMESTAMP}
+	</select>
+	
+	<select id="selectByTitleId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from t_crawl_reply
+		where title_id = #{titleId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByPostId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from t_crawl_reply
+		where post_id = #{postId,jdbcType=VARCHAR}
 	</select>
 </mapper>

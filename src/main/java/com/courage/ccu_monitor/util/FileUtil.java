@@ -7,7 +7,8 @@ import java.io.IOException;
 public class FileUtil {
 	
 	public static boolean createFile(String crepath){
-		File file = new File(crepath);
+		String userDir = System.getProperty("user.dir");
+		File file = new File(userDir+"\\"+crepath);
 		boolean pd = false;
 		if(!file.exists()){
 			pd = file.mkdirs();
@@ -21,7 +22,8 @@ public class FileUtil {
 			throws FileNotFoundException, IOException {
 		try {
 
-			File file = new File(delpath);
+			String userDir = System.getProperty("user.dir");
+			File file = new File(userDir+"\\"+delpath);
 			if (!file.isDirectory()) {
 				System.out.println("1");
 				file.delete();

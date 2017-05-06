@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.courage.ccu_monitor.component.TopwordAndKeywodStatistic;
@@ -50,14 +51,15 @@ public class TopwordAndKeywodStatisticImpl implements TopwordAndKeywodStatistic 
 	@Autowired
 	HotwordStatisticMapper hStatistic;
 
-	String pathIndex = "";
-	String pathText = "";
-	String textFile = "";
-	String indexFile = "";
+	String pathIndex = "/TopIndex";
+	String pathText = "/TopText";
+	String textFile = "text.txt";
+	String indexFile = "index.txt";
 
 	Logger logger = Logger.getLogger(AlarmMonitorImpl.class);
 
 	@SuppressWarnings("static-access")
+	@Scheduled(cron="0 45 23 * * ?" )
 	public void statistic() {
 
 		// 1删除 2查找 3分词 4匹配 5入库 6触发报警
@@ -79,16 +81,16 @@ public class TopwordAndKeywodStatisticImpl implements TopwordAndKeywodStatistic 
 		
 		int dayNum = cal.DAY_OF_YEAR;
 		
-		String start = sf.format(cal.getTime());
-		cal.add(Calendar.MINUTE, -30);
 		String end = sf.format(cal.getTime());
+		cal.add(Calendar.DAY_OF_MONTH, -1);
+		String start = sf.format(cal.getTime());
 
 		StringBuffer sbf = new StringBuffer();
 		List<CrawlReply> lreply = cReply.selectByTimeScope(start, end);
 		for (int i = 0; i < lreply.size(); i++) {
 			sbf.append(lreply.get(i).getText());
 		}
-		List<CrawlTitle> ltitle = cTitle.selectByTimeScope(start, end);
+		List<CrawlTitle> ltitle = cTitle.selectByTimeScope1(start, end);
 		for (int i = 0; i < ltitle.size(); i++) {
 			sbf.append(ltitle.get(i).getText());
 		}

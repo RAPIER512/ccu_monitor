@@ -1,5 +1,7 @@
 package com.courage.ccu_monitor.dao;
 
+import java.util.List;
+
 import com.courage.ccu_monitor.model.UserMsg;
 
 public interface UserMsgMapper {
@@ -14,4 +16,6 @@ public interface UserMsgMapper {
     int updateByPrimaryKeySelective(UserMsg record);
 
     int updateByPrimaryKey(UserMsg record);
+    
+    List<UserMsg> selectAll();
 }

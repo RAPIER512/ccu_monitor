@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.courage.ccu_monitor.model.CrawlTitle;
+import com.courage.ccu_monitor.vo.ContentVO;
 
 public interface CrawlTitleMapper {
     int deleteByPrimaryKey(Integer id);
@@ -23,5 +24,7 @@ public interface CrawlTitleMapper {
     
     
     
-    List<CrawlTitle> selectByTimeScope(@Param("start")String start,@Param("end")String end);
+    List<CrawlTitle> selectByTimeScope1(@Param("start")String start,@Param("end")String end);
+    
+    List<ContentVO>  selectContentVOById(String titleId);
 }

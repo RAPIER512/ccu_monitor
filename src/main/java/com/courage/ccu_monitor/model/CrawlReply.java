@@ -9,23 +9,33 @@ public class CrawlReply {
 
     private String openType;
 
-    private Date pubTime;
+    private String pubTime;
 
     private String postNo;
 
     private String commentNum;
 
+    private String titleId;
+    
     private String pid;
 
     private String userId;
 
     private String userName;
 
-    private Date createTime;
+    private String createTime;
 
     private String text;
 
-    public Integer getId() {
+    public String getTitleId() {
+		return titleId;
+	}
+
+	public void setTitleId(String titleId) {
+		this.titleId = titleId;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -49,11 +59,11 @@ public class CrawlReply {
         this.openType = openType == null ? null : openType.trim();
     }
 
-    public Date getPubTime() {
+    public String getPubTime() {
         return pubTime;
     }
 
-    public void setPubTime(Date pubTime) {
+    public void setPubTime(String pubTime) {
         this.pubTime = pubTime;
     }
 
@@ -97,11 +107,11 @@ public class CrawlReply {
         this.userName = userName == null ? null : userName.trim();
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

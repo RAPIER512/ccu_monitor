@@ -1,5 +1,7 @@
 package com.courage.ccu_monitor.dao;
 
+import java.util.List;
+
 import com.courage.ccu_monitor.model.Account;
 
 public interface AccountMapper {
@@ -14,4 +16,6 @@ public interface AccountMapper {
     int updateByPrimaryKeySelective(Account record);
 
     int updateByPrimaryKey(Account record);
+    
+    List<Account> getAllAccount();
 }

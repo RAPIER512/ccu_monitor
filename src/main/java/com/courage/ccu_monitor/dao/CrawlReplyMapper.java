@@ -23,4 +23,8 @@ public interface CrawlReplyMapper {
     
     
     List<CrawlReply> selectByTimeScope(@Param("start")String start,@Param("end")String end);
+    
+    List<CrawlReply> selectByTitleId(String titleId);
+    
+    CrawlReply selectByPostId(String postId);
 }

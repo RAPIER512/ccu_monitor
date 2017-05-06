@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
                         http://www.springframework.org/schema/context
                         http://www.springframework.org/schema/context/spring-context-3.1.xsd
-                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+                        http://www.springframework.org/schema/tx 
+                        http://www.springframework.org/schema/tx/spring-tx.xsd
+                        http://www.springframework.org/schema/task 
+                        http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
 	<!--自动扫描 -->
-	<context:component-scan base-package="com.courage.news">
+	<context:component-scan base-package="com.courage.ccu_monitor">
 		<context:exclude-filter type="regex"
-			expression="com.courage.news.controller.*" />
+			expression="com.courage.ccu_monitor.controller.*" />
 	</context:component-scan>
+	<!-- 开启自动扫描 -->
+	<task:annotation-driven scheduler="qbScheduler" mode="proxy"/>  
+    <task:scheduler id="qbScheduler" pool-size="10"/> 
+
 	<!--引入配置文件 -->
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -37,19 +46,19 @@
 		<property name="dataSource" ref="dataSource" />
 		<!-- 自动扫描mapping.xml文件 -->
 		<property name="mapperLocations" value="classpath:mapping/*.xml"></property>
-		<!-- 配置Mybatis 拦截器 实现在操作查询时 如果参数有Page 实体参数 就实行拦截重新组合成分页查询 -->
-		<!--<property name="plugins"> -->
-		<!--<array> -->
-		<!--<bean class="com.courage.cloudorder.util.page.PageInterceptor"> -->
-		<!--<property name="databaseType" value="mysql"/> -->
-		<!--</bean> -->
-		<!--</array> -->
-		<!--</property> -->
+		<!-- mybatis 分页实现的拦截 -->
+		<property name="plugins">
+            <array>
+                <bean class="com.courage.ccu_monitor.mybatisPage.PageInterceptor">
+                    <property name="databaseType" value="mysql"/>
+                </bean>
+            </array>
+        </property>
 	</bean>
 
 	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.courage.news.dao" />
+		<property name="basePackage" value="com.courage.ccu_monitor.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
 
@@ -85,11 +94,12 @@
 		<property name="permissionsLookupEnabled" value="true"></property>
 		<property name="dataSource" ref="dataSource1"></property>
 		<property name="authenticationQuery"
-			value="SELECT password FROM sec_user WHERE user_name = ?"></property>
-		<property name="userRolesQuery"
-			value="SELECT role_name from sec_user_role left join sec_role using(role_id) left join sec_user using(user_id) WHERE user_name = ?"></property>
-		<property name="permissionsQuery"
-			value="SELECT permission_name FROM sec_role_permission left join sec_role using(role_id) left join sec_permission using(permission_id) WHERE role_name = ?"></property>
+			value="SELECT password FROM t_account WHERE account = ?"></property>
+		<!-- <property name="userRolesQuery" value="SELECT role_name from sec_user_role 
+			left join sec_role using(role_id) left join sec_user using(user_id) WHERE 
+			user_name = ?"></property> <property name="permissionsQuery" value="SELECT 
+			permission_name FROM sec_role_permission left join sec_role using(role_id) 
+			left join sec_permission using(permission_id) WHERE role_name = ?"></property> -->
 	</bean>
 
 	<!-- Shiro安全管理器 -->
@@ -110,8 +120,7 @@
 		<property name="unauthorizedUrl" value="/"></property>
 		<property name="filterChainDefinitions">
 			<value>
-				/security/*=anon
-				/tag=authc
+				<!-- /login*=anon /*=authc -->
 			</value>
 		</property>
 	</bean>

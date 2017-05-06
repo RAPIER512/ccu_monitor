@@ -1,49 +1,70 @@
 package com.courage.ccu_monitor.controller;
 
-import com.courage.ccu_monitor.dao.UserMapper;
-import com.courage.ccu_monitor.model.User;
+import com.courage.ccu_monitor.model.Account;
+import com.courage.ccu_monitor.model.UserMsg;
+import com.courage.ccu_monitor.service.UserMsgManage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 /**
  * Created by courage on 2016/7/13.
  */
 @RestController
-@RequestMapping("/UserManage")
+@RequestMapping("/auth/useranage")
 public class UserManageCtr {
 
-    @Autowired
-    UserMapper userMapper;
+	@Autowired
+	UserMsgManage um;
 
-
-    @RequestMapping(value = "/removeUser.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/addusermsg.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public int removeUser(@RequestParam int id){
-        return userMapper.deleteByPrimaryKey(id);
-    }
+	public int addUserMsg(UserMsg umsg) {
+		return um.addUserMsg(umsg);
+	}
 
-    @RequestMapping(value = "/modifyUser.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/removeusermsg.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public int modifyUser(@RequestBody User user){
-        return userMapper.updateByPrimaryKeySelective(user);
-    }
+	public int removeUserMsg(int id) {
+		return um.removeUseMsg(id);
+	}
 
-    @RequestMapping(value = "/getUsers.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/modifyusermsg.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public List<User> getUsers(){
-        return userMapper.seletAll();
-    }
+	public int modifyUserMsg(UserMsg umsg) {
+		return um.modifyUserMsg(umsg);
+	}
 
-    @RequestMapping(value = "/addUser.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/getuserlist.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public int addUser(@RequestBody User user){
-        System.out.println(user.toString());
-        user.setId(null);
-        return userMapper.insertSelective(user);
-    }
+	public List<UserMsg> getUserList() {
+		return um.getListUserMsg();
+	}
 
+	// todo 根据account 获取用户的相关信息
+
+	@RequestMapping(value = "/addaccount.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+	public int addAccount(Account ac) {
+		return um.addAccount(ac);
+	}
+
+	@RequestMapping(value = "/removeaccount.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+	public int removeAccount(int id) {
+		return um.removeAccount(id);
+	}
+
+	@RequestMapping(value = "/modifyaccount.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+	public int modifyAccount(Account ac) {
+		return um.addAccount(ac);
+	}
+
+	// todo 获取账户相关信息列表
+
+	// todo 根据account 获取账户的相关信息
 
 }

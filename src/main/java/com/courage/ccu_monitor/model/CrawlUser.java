@@ -19,7 +19,7 @@ public class CrawlUser {
 
     private String tiebaAge;
 
-    private Date createTime;
+    private String createTime;
 
     public Integer getId() {
         return id;
@@ -85,11 +85,11 @@ public class CrawlUser {
         this.tiebaAge = tiebaAge == null ? null : tiebaAge.trim();
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

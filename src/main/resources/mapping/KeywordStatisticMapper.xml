@@ -14,7 +14,8 @@
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, keyword, day_num, week_num, month_num, type, hont_num, status,
+		id, keyword, day_num, week_num, month_num, type, hont_num,
+		status,
 		create_time
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
@@ -25,18 +26,23 @@
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from t_keyword_statistic
+		delete from
+		t_keyword_statistic
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.courage.ccu_monitor.model.KeywordStatistic">
-		insert into t_keyword_statistic (id, keyword, day_num,
+		insert into
+		t_keyword_statistic (id, keyword, day_num,
 		week_num, month_num, type,
 		hont_num, status, create_time
 		)
-		values (#{id,jdbcType=INTEGER}, #{keyword,jdbcType=VARCHAR},
+		values (#{id,jdbcType=INTEGER},
+		#{keyword,jdbcType=VARCHAR},
 		#{dayNum,jdbcType=INTEGER},
-		#{weekNum,jdbcType=INTEGER}, #{monthNum,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},
-		#{hontNum,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+		#{weekNum,jdbcType=INTEGER}, #{monthNum,jdbcType=INTEGER},
+		#{type,jdbcType=INTEGER},
+		#{hontNum,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER},
 		#{createTime,jdbcType=TIMESTAMP}
 		)
 	</insert>
@@ -132,15 +138,55 @@
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.courage.ccu_monitor.model.KeywordStatistic">
-		update t_keyword_statistic
+		update
+		t_keyword_statistic
 		set keyword = #{keyword,jdbcType=VARCHAR},
-		day_num = #{dayNum,jdbcType=INTEGER},
+		day_num =
+		#{dayNum,jdbcType=INTEGER},
 		week_num = #{weekNum,jdbcType=INTEGER},
 		month_num = #{monthNum,jdbcType=INTEGER},
-		type = #{type,jdbcType=INTEGER},
+		type =
+		#{type,jdbcType=INTEGER},
 		hont_num = #{hontNum,jdbcType=INTEGER},
 		status = #{status,jdbcType=INTEGER},
-		create_time = #{createTime,jdbcType=TIMESTAMP}
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+
+
+
+
+	<select id="seleSticByDay" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_keyword_statistic
+		where day_num = #{0}
+		and create_time like
+		concat('%',#{1},'%')
+	</select>
+	<select id="seleSticByWeek" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_keyword_statistic
+		where week_num = #{0}
+		and create_time like
+		concat('%',#{1},'%')
+	</select>
+	<select id="seleSticByMonth" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_keyword_statistic
+		where mon_num = #{0}
+		and create_time like
+		concat('%',#{1},'%')
+	</select>
+	<select id="selectSticByTimeScope" resultMap="BaseResultMap">
+		select
+		keyword,sum(hont_num) as hont_num
+		from t_keyword_statistic
+		where day_num
+		is not null and create_time between #{start,jdbcType=TIMESTAMP} and
+		#{end,jdbcType=TIMESTAMP} group by keyword limit 5
+	</select>
 </mapper>
