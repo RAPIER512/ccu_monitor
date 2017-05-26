@@ -3,13 +3,14 @@ package com.courage.ccu_monitor.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.courage.ccu_monitor.dao.AccountMapper;
 import com.courage.ccu_monitor.dao.UserMsgMapper;
 import com.courage.ccu_monitor.model.Account;
 import com.courage.ccu_monitor.model.UserMsg;
 import com.courage.ccu_monitor.service.UserMsgManage;
-
+@Service
 public class UserMsgManageImpl implements UserMsgManage {
 
 	@Autowired

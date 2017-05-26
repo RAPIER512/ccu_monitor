@@ -25,7 +25,7 @@ public class HotManage {
 	@Autowired
 	ContentManage cm;
 	
-	@RequestMapping(value = "/test1.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/gethotwordsticbyday.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
 	public List<HotwordStatistic> getHotWordSticByDay(@RequestParam("t")String time){
 		return hm.getHotwordByDay(time);

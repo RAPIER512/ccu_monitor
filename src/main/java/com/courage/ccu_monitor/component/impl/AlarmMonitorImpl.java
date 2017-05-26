@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ import com.courage.ccu_monitor.model.Keyword;
 import com.courage.ccu_monitor.util.FileUtil;
 import com.courage.ccu_monitor.util.lucene.GetTopTerms;
 import com.courage.ccu_monitor.util.lucene.IndexDocs;
+import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.seg.common.Term;
 
 @Component
 public class AlarmMonitorImpl implements AlarmMonitor {
@@ -47,7 +52,7 @@ public class AlarmMonitorImpl implements AlarmMonitor {
 
 	Logger logger = Logger.getLogger(AlarmMonitorImpl.class);
 
-	@Scheduled(cron = "0 0/1 * * * ?")
+	@Scheduled(cron = "0 0/15 * * * ?")
 	public void getSensitive() {
 
 		// 1删除 2查找 3分词 4匹配 5入库 6触发报警
@@ -67,25 +72,19 @@ public class AlarmMonitorImpl implements AlarmMonitor {
 		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String end = sf.format(cal.getTime());
-		cal.add(Calendar.MINUTE, -400);
+		cal.add(Calendar.MINUTE, -15);
 		String start = sf.format(cal.getTime());
-
-		System.out.println(">>>>>>>>>1");
 		
 		StringBuffer sbf = new StringBuffer();
 		List<CrawlReply> lreply = cReply.selectByTimeScope(start, end);
 		for (int i = 0; i < lreply.size(); i++) {
 			sbf.append(lreply.get(i).getText());
 		}
-		
-		System.out.println(">>>>>>>>>2");
-		
 		List<CrawlTitle> ltitle = cTitle.selectByTimeScope1(start, end);
 		for (int i = 0; i < ltitle.size(); i++) {
 			sbf.append(ltitle.get(i).getText());
 		}
 		
-		System.out.println(">>>>>>>>>3");
 		if (sbf.length() == 0) {
 			logger.error("索引数据为空！");
 			return;
@@ -97,14 +96,23 @@ public class AlarmMonitorImpl implements AlarmMonitor {
 			return;
 		}
 
-		// 创建索引 并分词
-		IndexDocs.createIndex(sbf.toString(), pathIndex);
-		// 读取分词结果
-		Map<String, Integer> terms = GetTopTerms.getTermByMap(pathIndex);
-
-		System.out.println("terms>>>>"+terms);
-		System.out.println("sbf>>>>"+sbf.toString());
+		List<Term> termList = HanLP.segment(sbf.toString());
+		Map<String, Integer> terms = new HashMap<String, Integer>();
+		for(int i=0;i<termList.size();i++){
+			String temp = termList.get(i).word;
+			if(terms.containsKey(temp)){
+				terms.put(temp, terms.get(temp)+1);
+			}else{
+				terms.put(temp, 1);
+			}
+		}
 		
+		// 创建索引 并分词
+//		IndexDocs.createIndex(sbf.toString(), pathIndex);
+		// 读取分词结果
+//		Map<String, Integer> terms = GetTopTerms.getTermByMap(pathIndex);
+
+		System.out.println("terms>>>>"+terms.size());
 		
 		for (int i = 0; i < keywords.size(); i++) {
 			if (terms.containsKey(keywords.get(i).getKeyword())) {
@@ -116,6 +124,8 @@ public class AlarmMonitorImpl implements AlarmMonitor {
 				record.setCreteTime(new Timestamp(System.currentTimeMillis())
 						.toString());
 				aRecord.insert(record);
+				
+				System.out.println("比较"+i);
 			}
 		}
 	}
@@ -142,6 +152,5 @@ public class AlarmMonitorImpl implements AlarmMonitor {
 		// 读取分词结果
 		Map<String, Integer> terms = GetTopTerms.getTermByMap(pathIndex);
 		System.out.println("terms.size()"+terms.size());
-	
 	}
 }

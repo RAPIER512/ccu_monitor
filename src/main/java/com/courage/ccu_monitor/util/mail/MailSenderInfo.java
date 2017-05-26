@@ -30,10 +30,10 @@ public class MailSenderInfo {
 		this.mailServerHost = "smtp.qq.com";
 		this.mailServerPort = "25";
 		this.validate = true;
-		this.userName = "2395955747@qq.com";
-		this.password = "512666zgq";// 您的邮箱密码
-		this.fromAddress = "2395955747@qq.com";
-		this.toAddress = "1071712073@qq.com";
+		this.userName = "1071712073@qq.com";
+		this.password = "zgq123456789";// 您的邮箱密码
+		this.fromAddress = "1071712073@qq.com";
+		this.toAddress = "2395955747@qq.com";
 	}
 
 	/**

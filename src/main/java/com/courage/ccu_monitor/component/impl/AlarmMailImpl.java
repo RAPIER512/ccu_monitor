@@ -18,7 +18,7 @@ public class AlarmMailImpl implements AlarmMail {
 	@Autowired
 	AlarmRecordMapper alarmRecor;
 
-	@Scheduled(cron = "0 0/5 * * * ?")
+	@Scheduled(cron = "0 0/15 * * * ?")
 	public void CheckAndSndMail() {
 		List<AlarmRecord> list = alarmRecor.selectAlarmRecordByStatus(1);
 		StringBuffer mailContent = new StringBuffer();

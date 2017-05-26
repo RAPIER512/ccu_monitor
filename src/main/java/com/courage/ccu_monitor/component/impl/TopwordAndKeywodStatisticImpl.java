@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,6 +30,8 @@ import com.courage.ccu_monitor.model.KeywordStatistic;
 import com.courage.ccu_monitor.util.FileUtil;
 import com.courage.ccu_monitor.util.lucene.GetTopTerms;
 import com.courage.ccu_monitor.util.lucene.IndexDocs;
+import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.seg.common.Term;
 
 @Component
 public class TopwordAndKeywodStatisticImpl implements TopwordAndKeywodStatistic {
@@ -105,20 +108,40 @@ public class TopwordAndKeywodStatisticImpl implements TopwordAndKeywodStatistic 
 			return;
 		}
 
-		// 创建索引 并分词
-		IndexDocs.createIndex(sbf.toString(), pathIndex);
-		// 读取分词结果
-		Map<String, Integer> terms = GetTopTerms.getTermByMap(pathIndex);
-		// 根据关键词热度值进行排序
-		List<Entry<String, Integer>> sortList = GetTopTerms.sortTermsMap(terms);
-		// 获取top 10 关键词 并入库
-		for(int i=sortList.size() -1;i>sortList.size()-11;i--){
-			hStatistic.insert(new HotwordStatistic(sortList.get(i).getKey(),dayNum,sortList.get(i).getValue(),new Timestamp(System.currentTimeMillis()).toString()));
+		//hanlp 分词统计
+		List<Term> termList = HanLP.segment(sbf.toString());
+		Map<String, Integer> terms = new HashMap<String, Integer>();
+		for(int i=0;i<termList.size();i++){
+			String temp = termList.get(i).word;
+			if(terms.containsKey(temp)){
+				terms.put(temp, terms.get(temp)+1);
+			}else{
+				terms.put(temp, 1);
+			}
 		}
+		List<String> hotwordList = HanLP.extractKeyword(sbf.toString(), 10);
+		//todo  有可能分词后的数据不到10个
+		for(int i=hotwordList.size()-1;i>hotwordList.size()-11;i--){
+			hStatistic.insert(new HotwordStatistic(hotwordList.get(i),dayNum,terms.get(hotwordList.get(i)),new Timestamp(System.currentTimeMillis()).toString()));
+		}
+		
+		// 创建索引 并分词
+//		IndexDocs.createIndex(sbf.toString(), pathIndex);
+		// 读取分词结果
+//		Map<String, Integer> terms = GetTopTerms.getTermByMap(pathIndex);
+		// 根据关键词热度值进行排序
+//		List<Entry<String, Integer>> sortList = GetTopTerms.sortTermsMap(terms);
+		// 获取top 10 关键词 并入库
+//		for(int i=sortList.size() -1;i>sortList.size()-11;i--){
+//			hStatistic.insert(new HotwordStatistic(sortList.get(i).getKey(),dayNum,sortList.get(i).getValue(),new Timestamp(System.currentTimeMillis()).toString()));
+//		}
+		
 		// 获取敏感关键词 并入库
 		for (int i = 0; i < keywords.size(); i++) {
 			if (terms.containsKey(keywords.get(i).getKeyword())) {
 				kStatistic.insert(new KeywordStatistic(keywords.get(i).getKeyword(),dayNum,terms.get(keywords.get(i).getKeyword()),new Timestamp(System.currentTimeMillis()).toString()));
+			}else{
+				kStatistic.insert(new KeywordStatistic(keywords.get(i).getKeyword(),dayNum,1,new Timestamp(System.currentTimeMillis()).toString()));
 			}
 		}
 	}

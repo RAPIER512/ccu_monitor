@@ -21,4 +21,6 @@ public interface AlarmRecordMapper {
     List<AlarmRecord> selectAllAlarmRecord();
     
     List<AlarmRecord> selectAlarmRecordByStatus(int status);
+    
+    int selectCountOfDay(String time);
 }

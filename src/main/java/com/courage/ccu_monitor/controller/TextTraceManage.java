@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.courage.ccu_monitor.service.ContentManage;
+import com.courage.ccu_monitor.vo.AllQueryVO;
 import com.courage.ccu_monitor.vo.ContentVO;
 import com.courage.ccu_monitor.vo.QueryVO;
 
@@ -22,7 +24,7 @@ public class TextTraceManage {
 	
 	@RequestMapping(value = "/getcontentvoby.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-	public List<ContentVO> getContentVOBy(String id,String type){
+	public List<ContentVO> getContentVOBy(@RequestParam("id")String id,@RequestParam("type")String type){
 		return cm.getContentById(id, type);
 	}
 	
@@ -34,7 +36,7 @@ public class TextTraceManage {
 	 */
 	@RequestMapping(value = "/getqueryvo.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-	public List<QueryVO> getQueryVO(String params,String type){
+	public AllQueryVO getQueryVO(@RequestParam("key")String params,@RequestParam("type")String type){
 		return cm.getQueryVO(params, type);
 	}
 }

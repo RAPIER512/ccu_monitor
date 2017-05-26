@@ -14,4 +14,6 @@ public interface CrawlUserMapper {
     int updateByPrimaryKeySelective(CrawlUser record);
 
     int updateByPrimaryKey(CrawlUser record);
+    
+    int selectAllUserCount();
 }

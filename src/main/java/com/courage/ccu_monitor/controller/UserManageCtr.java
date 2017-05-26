@@ -19,7 +19,7 @@ public class UserManageCtr {
 	@Autowired
 	UserMsgManage um;
 
-	@RequestMapping(value = "/addusermsg.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/addusermsg.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
 	public int addUserMsg(UserMsg umsg) {
 		return um.addUserMsg(umsg);
@@ -27,11 +27,11 @@ public class UserManageCtr {
 
 	@RequestMapping(value = "/removeusermsg.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-	public int removeUserMsg(int id) {
+	public int removeUserMsg(@RequestParam("id")int id) {
 		return um.removeUseMsg(id);
 	}
 
-	@RequestMapping(value = "/modifyusermsg.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/modifyusermsg.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
 	public int modifyUserMsg(UserMsg umsg) {
 		return um.modifyUserMsg(umsg);

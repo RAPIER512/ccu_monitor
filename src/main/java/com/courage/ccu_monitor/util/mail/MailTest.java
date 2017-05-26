@@ -11,6 +11,7 @@ public class MailTest {
 		// 这个类主要来发送邮件
 		SimpleMailSender sms = new SimpleMailSender();
 		// sms.sendTextMail(mailInfo);// 发送文体格式
-		sms.sendHtmlMail(mailInfo,null);// 发送html格式
+//		sms.sendHtmlMail(mailInfo,null);// 发送html格式
+		sms.sendHtmlMail(mailInfo,new String[]{"1071712073@qq.com"});// 发送html格式
 	}
 }

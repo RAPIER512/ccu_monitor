@@ -251,6 +251,13 @@
 			<artifactId>solr-solrj</artifactId>
 			<version>6.2.1</version>
 		</dependency>
+
+		<!-- hanlp -->
+		<dependency>
+			<groupId>com.hankcs</groupId>
+			<artifactId>hanlp</artifactId>
+			<version>portable-1.2.4</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>ccu_monitor</finalName>

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.courage.ccu_monitor.model.Account;
 import com.courage.ccu_monitor.model.UserMsg;
 
-@Service
+
 public interface UserMsgManage {
 
 	public int addUserMsg(UserMsg uMsg);

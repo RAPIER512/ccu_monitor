@@ -14,6 +14,7 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
 import com.alibaba.druid.util.HttpClientUtils;
+import com.alibaba.fastjson.JSON;
 
 public class SorlUtil {
 
@@ -40,7 +41,7 @@ public class SorlUtil {
 			e.printStackTrace();
 		}
 		if (results != null) {
-			return results.toString();
+			return JSON.toJSON(results).toString();
 		} else {
 			return null;
 		}
@@ -64,7 +65,7 @@ public class SorlUtil {
 			e.printStackTrace();
 		}
 		if (results != null) {
-			return results.toString();
+			return JSON.toJSON(results).toString();
 		} else {
 			return null;
 		}
@@ -87,6 +88,8 @@ public class SorlUtil {
 		QueryResponse response = solrClient.query(solrQuery);
 
 		SolrDocumentList results = response.getResults();
+		
+		System.out.println("JSON.toJSON(results):"+JSON.toJSON(results));
 		// 结果集有多少条数据
 		long numFond = results.getNumFound();
 

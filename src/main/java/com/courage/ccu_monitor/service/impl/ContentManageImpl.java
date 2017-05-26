@@ -6,17 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-
-
-
-
-
-
-
-
-
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -25,6 +14,7 @@ import com.courage.ccu_monitor.dao.CrawlTitleMapper;
 import com.courage.ccu_monitor.model.CrawlReply;
 import com.courage.ccu_monitor.service.ContentManage;
 import com.courage.ccu_monitor.util.SorlUtil;
+import com.courage.ccu_monitor.vo.AllQueryVO;
 import com.courage.ccu_monitor.vo.ContentVO;
 import com.courage.ccu_monitor.vo.QueryVO;
 
@@ -52,30 +42,46 @@ public class ContentManageImpl implements ContentManage {
 		return list;
 	}
 
-	public List<QueryVO> getQueryVO(String parms,String type) {
+	public AllQueryVO getQueryVO(String parms,String type) {
+		AllQueryVO allQueryVO = new AllQueryVO();
 		String result = null;
-		if("title".equals(type)){
+		String result2 = null;
+		if(type.contains("title")){
 			result = SorlUtil.getTitleByCondition(parms);
-		}else if("reply".equals(type)){
-			result = SorlUtil.getReplyByCondition(parms);
-		}else{
-			return null;
-		}
-		JSONObject jo = (JSONObject) JSON.parse(result);
-		try {
-			List<QueryVO> list = new ArrayList<QueryVO>();
-			JSONArray ja = jo.getJSONObject("response").getJSONArray("docs");
-			if(ja.size()>0){
-				for(int i=0;i<ja.size();i++){
-					JSONObject jo1= ja.getJSONObject(i);
-					QueryVO qv = JSON.parseObject(jo1.toJSONString(), QueryVO.class);
-					list.add(qv);
+			System.out.println("&&&&&&&&&&&&&"+result.toString());
+			JSONArray jo = JSON.parseArray(result);
+			try {
+				List<QueryVO> list = new ArrayList<QueryVO>();
+				if(jo.size()>0){
+					for(int i=0;i<jo.size();i++){
+						JSONObject jo1= jo.getJSONObject(i);
+						QueryVO qv = JSON.parseObject(jo1.toJSONString(), QueryVO.class);
+						list.add(qv);
+					}
 				}
+				allQueryVO.setTitles(list);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			return list;
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		return null;
+		if(type.contains("reply")){
+			result2 = SorlUtil.getReplyByCondition(parms);
+			System.out.println("&&&&&33333&&&&&"+result2.toString());
+			JSONArray jo = JSON.parseArray(result2);
+			try {
+				List<QueryVO> list = new ArrayList<QueryVO>();
+				if(jo.size()>0){
+					for(int i=0;i<jo.size();i++){
+						JSONObject jo1= jo.getJSONObject(i);
+						QueryVO qv = JSON.parseObject(jo1.toJSONString(), QueryVO.class);
+						list.add(qv);
+					}
+				}
+				allQueryVO.setReplys(list);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return allQueryVO;
 	}
 }

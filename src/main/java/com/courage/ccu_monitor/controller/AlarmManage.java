@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,35 +32,35 @@ public class AlarmManage {
 	
 	@RequestMapping(value = "/getkeywordSticbyday.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-	public List<KeywordStatistic> getKeyWordSticByDay(String time){
+	public List<KeywordStatistic> getKeyWordSticByDay(@RequestParam("t")String time){
 		return km.getKeywordByDay(time);
 	}
 	
 	@RequestMapping(value = "/getkeywordsticbyweek.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-	public List<KeywordStatistic> getKeyWordSticByWeek(String time){
+	public List<KeywordStatistic> getKeyWordSticByWeek(@RequestParam("t")String time){
 		return km.getKeywordByWeek(time);
 	}
 	
 	@RequestMapping(value = "/getkeywordsticbymonth.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-	public List<KeywordStatistic> getKeyWordSticByMonth(String time){
+	public List<KeywordStatistic> getKeyWordSticByMonth(@RequestParam("t")String time){
 		return km.getKeywordByMonth(time);
 	}
 	
 	@RequestMapping(value = "/getalarmrecordbypage.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-	public List<AlarmRecord> getAlarmRecordByPage(int pageNum,int pageSize){
+	public List<AlarmRecord> getAlarmRecordByPage(@RequestParam("pageNum")int pageNum,@RequestParam("pageSize")int pageSize){
 		return am.getAlarmRecord(pageNum,pageSize);
 	}
 	
 	@RequestMapping(value = "/getcontentvobyid.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-	public List<ContentVO> getContentVOById(String id,String type){
+	public List<ContentVO> getContentVOById(@RequestParam("id")String id,@RequestParam("type")String type){
 		return cm.getContentById(id, type);
 	}
 	
-	@RequestMapping(value = "/addkeyword.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/addkeyword.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
 	public int addKeyWord(Keyword kword){
 		return km.addKeyword(kword);
@@ -67,11 +68,11 @@ public class AlarmManage {
 	
 	@RequestMapping(value = "/removekeyword.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-	public int removeKeyWord(int id){
+	public int removeKeyWord(@RequestParam("id")int id){
 		return km.removeKeyword(id);
 	}
 	
-	@RequestMapping(value = "/modifykeyword.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/modifykeyword.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
 	public int modifyKeyWord(Keyword kword){
 		return km.modifyKeyword(kword);

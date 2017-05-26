@@ -236,4 +236,16 @@
 		<result column="text" property="text" jdbcType="LONGVARCHAR" />
 	</resultMap>
 
+
+	<select id="selectCountOfDay" parameterType="java.lang.String"  resultType="java.lang.Integer">
+		select count(id)
+		from t_crawl_title
+		where create_time like #{time,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectAllTitleCount" resultType="java.lang.Integer">
+		select count(id)
+		from t_crawl_title
+	</select>
+	
 </mapper>

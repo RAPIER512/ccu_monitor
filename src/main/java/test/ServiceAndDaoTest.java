@@ -1,12 +1,17 @@
 package test;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -61,5 +66,30 @@ public class ServiceAndDaoTest {
     @Test  
     public void test1(){  
         System.out.println("wo jiu shi wo");
-    }  
+    } 
+    
+    public static void main(String[] args) {
+    	String time = "2017-05-23 14:54:44";
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = null;
+		try {
+			date = sf.parse(time);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+    	System.out.println(cal.get(Calendar.DAY_OF_YEAR));
+    	
+    	
+    	/*ApplicationContext content = new ClassPathXmlApplicationContext("classpath:spring-mybatis.xml");
+    	try {
+    		while(true){
+    			Thread.sleep(1000*60*60);
+    		}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}*/
+	}
 }

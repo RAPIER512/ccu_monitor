@@ -97,4 +97,10 @@
 		from t_alarm_record
 		where status = #{status,jdbcType=INTEGER}
 	</select>
+	
+	<select id="selectCountOfDay" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(id)
+		from t_alarm_record
+		where crete_time like #{time,jdbcType=VARCHAR}
+	</select>
 </mapper>

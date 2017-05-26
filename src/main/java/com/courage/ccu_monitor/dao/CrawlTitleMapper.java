@@ -27,4 +27,8 @@ public interface CrawlTitleMapper {
     List<CrawlTitle> selectByTimeScope1(@Param("start")String start,@Param("end")String end);
     
     List<ContentVO>  selectContentVOById(String titleId);
+    
+    int selectCountOfDay(String time);
+    
+    int selectAllTitleCount();
 }
